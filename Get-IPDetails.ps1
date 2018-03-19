@@ -1,5 +1,4 @@
 ﻿<#
-
 .NAME
     Get-IPDetails
     
@@ -26,6 +25,7 @@
    Get-IPDetails -Value ISP
 
 #>
+
 
 Try
 {
@@ -59,12 +59,23 @@ Function Get-IPDetails($Value)
           write-host "$Banner Below is your ISP Details : $Banner" -ForegroundColor Green
           write-host ($ISP_Details | Format-List | Out-String ) -ForegroundColor Cyan
    }
+
+   Function SearchIP
+   {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+        $InputValue = Read-Host "Enter the IPAddress or Hostname to Search for "
+        $SearchIP = ((Invoke-RestMethod -Uri "https://tools.keycdn.com/geo.json?host=$InputValue").data).geo
+        write-host "$Banner Below is the IP Details : $Banner" -ForegroundColor Green
+        write-host ($SearchIP | Format-List | Out-String ) -ForegroundColor Cyan
+   }
+ 
      
     Switch ($Value)
     {
        LocalIP  { LocalIP }      
        PublicIP { PublicIP }
        ISP { ISP-Details }
+       SearchIP { SearchIP }
        default{ LocalIP ; PublicIP ; ISP-Details}
     }
 }
