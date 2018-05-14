@@ -13,7 +13,7 @@ $([datetime]::Now).tostring() + ", Info: Executing server-wide configuration" | 
 
 #===[ Setting the configuration for all Subscriptions ]===#
 
-$FinalCheck = plesk db -Ne "Select name from domains where id in (Select ownerid from iisapppools where recyclingbyprivatememory = '204800' or recyclingbyprivatememory = '153600') and webspace_id = 0;"
+$FinalCheck = plesk db -Ne "Select name from domains where id in (Select ownerid from iisapppools where recyclingbyprivatememory != '256000') and webspace_id = 0;"
 if(!($host_name.contains('bh')))
 {
     if($FinalCheck)
